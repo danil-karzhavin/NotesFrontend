@@ -1,7 +1,7 @@
 import React from 'react';
 import NoteItem from './NoteItem';
 
-const NoteList = ({notes, title}) => {
+const NoteList = ({notes, title, remove}) => {
     // из props вытягирваем нужное нам поле
     return (
         <div>
@@ -9,10 +9,8 @@ const NoteList = ({notes, title}) => {
                 {title}
             </h1>
         {notes.map((note, index) => 
-        <div>
-          <NoteItem number={index + 1} note={note} key={note.id}/>
-          {/* В компонент NoteItem передается объект note, key нужен для работы react должен быть статичным и уник. для каждого элемента */}
-        </div>)}
+          <NoteItem remove={remove} number={index + 1} note={note} key={note.id}/>
+          )}
         </div>
     )
 }

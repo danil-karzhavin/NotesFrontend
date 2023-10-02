@@ -1,4 +1,5 @@
 import React from 'react';
+import MyButton from '../UI/button/MyButton';
 
 const NoteItem = (props) => { // с помощью props передаем данные внутрь
     //console.log(props);
@@ -13,7 +14,9 @@ const NoteItem = (props) => { // с помощью props передаем дан
             </div>
           </div>
           <div className="note__btns">
-            <button>Delete</button>
+            <MyButton onClick={() => props.remove(props.note)}>
+              Удалить
+            </MyButton>
           </div>
       </div>
         </div>
