@@ -8,9 +8,9 @@ const NoteList = ({notes, title}) => {
             <h1 style={{textAlign: 'center'}}>
                 {title}
             </h1>
-        {notes.map(note => 
+        {notes.map((note, index) => 
         <div>
-          <NoteItem note={note} key={note.id}/>
+          <NoteItem number={index + 1} note={note} key={note.id}/>
           {/* В компонент NoteItem передается объект note, key нужен для работы react должен быть статичным и уник. для каждого элемента */}
         </div>)}
         </div>

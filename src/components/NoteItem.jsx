@@ -6,7 +6,7 @@ const NoteItem = (props) => { // с помощью props передаем дан
         <div>
             <div className="note">
         <div className='note__content'>
-          <strong>{props.note.id}. {props.note.title}</strong>
+          <strong>{props.number}. {props.note.title}</strong>
           {/* через объект props получаем доступ к объекту note (а уже из него к title) */}
             <div>
               {props.note.body}
