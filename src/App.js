@@ -35,12 +35,12 @@ function App() {
   //   const notes = await NoteService.getALL();
   //   setNotes(notes)
   // }
-
+  async function change(note) {}
   
   return (
     <div className="App">
       <NoteForm create={createNote}/>
-      <NoteList remove={removeNote} notes={notes} title={'Список заметок:'} />
+      <NoteList remove={removeNote} change={change} notes={notes} title={'Список заметок:'} />
     </div>
   );
 }

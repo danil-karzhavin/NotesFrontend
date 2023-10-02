@@ -17,6 +17,9 @@ const NoteItem = (props) => { // с помощью props передаем дан
             <MyButton onClick={() => props.remove(props.note)}>
               Удалить
             </MyButton>
+            <MyButton onClick={() => props.change(props.note)}>
+              Изменить
+            </MyButton>
           </div>
       </div>
         </div>
