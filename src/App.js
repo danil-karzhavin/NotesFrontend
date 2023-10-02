@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
-import Counter from "./components/Counter";
-import СlassCounter from "./components/СlassCounter";
 import './styles/App.css'
-import NoteItem from './components/NoteItem';
 import NoteList from './components/NoteList';
 import MyButton from './UI/button/MyButton';
+import MyInput from './UI/input/MyInput';
 
 function App() {
   const [notes, setNotes] = useState([
@@ -17,8 +15,8 @@ function App() {
   return (
     <div className="App">
       <form>
-        <input type="text" placeholder='Название заметки'/>
-        <input type="text" placeholder='Описание заметки'/>
+        <MyInput type="text" placeholder='Название заметки'/>
+        <MyInput type="text" placeholder='Описание заметки'/>
         <MyButton disabled>Сохранить заметку</MyButton>
       </form>
       <NoteList notes={notes} title={'Список заметок:'} />
