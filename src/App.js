@@ -12,8 +12,11 @@ function App() {
     fetchNotes()
   }, [])
 
-  const createNote = (newNote) => {
-    setNotes([...notes, newNote])
+  async function createNote(newNote)  {
+    //setNotes([...notes, newNote])
+    await NoteService.createNote(newNote.title, newNote.body);
+    const notes = await NoteService.getALL();
+    setNotes(notes)
 
   }
   async function fetchNotes() {
@@ -21,10 +24,17 @@ function App() {
     setNotes(notes)
   }
 
-  const removeNote = (note) => {
-    setNotes(notes.filter(n => n.id !== note.id))
+  async function removeNote (note) {
+    await NoteService.deleteNote(note.id);
+    const notes = await NoteService.getALL();
+    setNotes(notes)
   }
 
+  // async function change(note){
+  //   await NoteService.updateNote(note.id, note.title, note.body)
+  //   const notes = await NoteService.getALL();
+  //   setNotes(notes)
+  // }
 
   
   return (

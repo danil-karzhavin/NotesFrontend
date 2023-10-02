@@ -8,7 +8,7 @@ const NoteForm = ({create}) => {
     const addNewNote = (e) => {
         e.preventDefault()
         const newNote = {
-            ...note, id: Date.now()
+            ...note, // id: Date.now()
         }
         create(newNote)
         setNote({title: '', body: ''})
