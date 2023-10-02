@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './styles/App.css'
 import NoteList from './components/NoteList';
 import NoteForm from './components/NoteForm';
-import axios from 'axios';
+import NoteService from './API/NoteService';
 
 function App() {
   const [notes, setNotes] = useState([])
@@ -17,13 +17,14 @@ function App() {
 
   }
   async function fetchNotes() {
-    const response = await axios.get('http://localhost:5010/notes')
-    setNotes(response.data)
+    const notes = await NoteService.getALL();
+    setNotes(notes)
   }
 
   const removeNote = (note) => {
     setNotes(notes.filter(n => n.id !== note.id))
   }
+
 
   
   return (
