@@ -4,7 +4,7 @@ import NoteForm from '../components/NoteForm';
 import NoteService from '../API/NoteService';
 import { useNavigate } from 'react-router-dom';
 
-function Notes() {
+function Notes({func}) {
   const [notes, setNotes] = useState([])
 
   // автоматическая загрузка всех постов при обновлении страницы
@@ -32,8 +32,10 @@ function Notes() {
 
   const navigate = useNavigate();
 
-  const change = () => {
-    navigate('/changeform');
+  const change = (note) => {
+    navigate('/changeform', { state: note });
+    return note;
+    //func(note)
   };
   
   return (
