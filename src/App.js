@@ -8,7 +8,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/changeForm" element={<ChangeForm />} />
+        <Route path="/changeform" element={<ChangeForm />} />
         <Route path="/notes" element={<Notes />}/>
       </Routes>
     </Router>

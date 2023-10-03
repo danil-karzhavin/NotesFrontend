@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import NoteList from '../components/NoteList';
 import NoteForm from '../components/NoteForm';
 import NoteService from '../API/NoteService';
+import { useNavigate } from 'react-router-dom';
 
 function Notes() {
   const [notes, setNotes] = useState([])
@@ -29,12 +30,11 @@ function Notes() {
     setNotes(notes)
   }
 
-  // async function change(note){
-  //   await NoteService.updateNote(note.id, note.title, note.body)
-  //   const notes = await NoteService.getALL();
-  //   setNotes(notes)
-  // }
-  async function change(note) {}
+  const navigate = useNavigate();
+
+  const change = () => {
+    navigate('/changeform');
+  };
   
   return (
     <div className="App">
