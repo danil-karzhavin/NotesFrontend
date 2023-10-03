@@ -13,7 +13,7 @@ const ChangeForm = (props) => {
     async function ChangeNote(changedNote)  {
         console.log(changedNote.body);
         await NoteService.updateNote(changedNote.id, changedNote.title, changedNote.body);
-        //navigate('/notes'); // переходим обратно на основную страницу
+        navigate('/notes'); // переходим обратно на основную страницу
     }
 
     return (
