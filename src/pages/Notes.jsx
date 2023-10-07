@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import NoteList from '../components/NoteList';
 import NoteForm from '../components/NoteForm';
 import NoteService from '../API/NoteService';
 import { useNavigate } from 'react-router-dom';
 import MySelect from '../UI/select/MySelect';
+import MyInput from '../UI/input/MyInput';
 
 function Notes({func}) {
   const [notes, setNotes] = useState([])
@@ -39,18 +40,38 @@ function Notes({func}) {
     //func(note)
   };
   
-  const [selectedSort, setSelectedSort] = useState('')
+  const [selectedSort, setSelectedSort] = useState('') // в selectedSort хранится либо title, либо body
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const sortedNotes = useMemo (() => {
+    console.log(' вызов getSortedNotes')
+    if (selectedSort) {
+      return [...notes].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]))
+    }
+    return notes;
+  }, [selectedSort, notes]) // здесь указываются зависимости, при изменении которых будет вызвана функция внути 
+  // useMemo(), которая вернет отсортированный список
+
+  const sortedAndSearchedNotes = useMemo(() => {
+    console.log('Call sortedAndSearchedNotes')
+    return sortedNotes.filter(note => note.title.toLowerCase().includes(searchQuery.toLowerCase())) // поиск по заколовкам
+  }, [searchQuery, sortedNotes])
 
   const sortNotes = (sort) => {
     setSelectedSort(sort);
-    console.log(sort);
-    setNotes([...notes].sort((a, b) => a[sort].localeCompare(b[sort])));
+    //console.log(sort);
+    //setNotes();
   } 
   return (
     <div className="App">
       <NoteForm create={createNote}/>
       <hr style={{margin: '15px 0'}}/>
       <div>
+        <MyInput
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+          placeholder='Поиск по названию'
+        />
         <MySelect
           value = {selectedSort}
           onChange={sortNotes}
@@ -61,8 +82,8 @@ function Notes({func}) {
           ]}
         />
       </div>
-      {notes.length !== 0
-      ? <NoteList remove={removeNote} change={change} notes={notes} title={'Список заметок:'} />
+      {sortedAndSearchedNotes.length !== 0
+      ? <NoteList remove={removeNote} change={change} notes={sortedAndSearchedNotes} title={'Список заметок:'} />
       : <h1 style={{textAlign: 'center'}}>Заметки не найдены!</h1>
       }
       
