@@ -3,6 +3,7 @@ import NoteList from '../components/NoteList';
 import NoteForm from '../components/NoteForm';
 import NoteService from '../API/NoteService';
 import { useNavigate } from 'react-router-dom';
+import MySelect from '../UI/select/MySelect';
 
 function Notes({func}) {
   const [notes, setNotes] = useState([])
@@ -38,10 +39,33 @@ function Notes({func}) {
     //func(note)
   };
   
+  const [selectedSort, setSelectedSort] = useState('')
+
+  const sortNotes = (sort) => {
+    setSelectedSort(sort);
+    console.log(sort);
+    setNotes([...notes].sort((a, b) => a[sort].localeCompare(b[sort])));
+  } 
   return (
     <div className="App">
       <NoteForm create={createNote}/>
-      <NoteList remove={removeNote} change={change} notes={notes} title={'Список заметок:'} />
+      <hr style={{margin: '15px 0'}}/>
+      <div>
+        <MySelect
+          value = {selectedSort}
+          onChange={sortNotes}
+          defaultValue='Сортировка по'
+          options={[
+            {value: 'title', name:'По названию'},
+            {value: 'body', name:'По содержимому'}
+          ]}
+        />
+      </div>
+      {notes.length !== 0
+      ? <NoteList remove={removeNote} change={change} notes={notes} title={'Список заметок:'} />
+      : <h1 style={{textAlign: 'center'}}>Заметки не найдены!</h1>
+      }
+      
     </div>
   );
 }
