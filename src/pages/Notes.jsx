@@ -5,6 +5,7 @@ import NoteService from '../API/NoteService';
 import { useNavigate } from 'react-router-dom';
 import MySelect from '../UI/select/MySelect';
 import MyInput from '../UI/input/MyInput';
+import NoteFilter from '../components/NoteFilter';
 
 function Notes({func}) {
   const [notes, setNotes] = useState([])
@@ -40,48 +41,27 @@ function Notes({func}) {
     //func(note)
   };
   
-  const [selectedSort, setSelectedSort] = useState('') // в selectedSort хранится либо title, либо body
-  const [searchQuery, setSearchQuery] = useState('')
+  const [filter, setFilter] = useState({sort: '', query: ''})
 
   const sortedNotes = useMemo (() => {
     console.log(' вызов getSortedNotes')
-    if (selectedSort) {
-      return [...notes].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]))
+    if (filter.sort) {
+      return [...notes].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))
     }
     return notes;
-  }, [selectedSort, notes]) // здесь указываются зависимости, при изменении которых будет вызвана функция внути 
+  }, [filter.sort, notes]) // здесь указываются зависимости, при изменении которых будет вызвана функция внути 
   // useMemo(), которая вернет отсортированный список
 
   const sortedAndSearchedNotes = useMemo(() => {
     console.log('Call sortedAndSearchedNotes')
-    return sortedNotes.filter(note => note.title.toLowerCase().includes(searchQuery.toLowerCase())) // поиск по заколовкам
-  }, [searchQuery, sortedNotes])
+    return sortedNotes.filter(note => note.title.toLowerCase().includes(filter.query.toLowerCase())) // поиск по заколовкам
+  }, [filter.query, sortedNotes])
 
-  const sortNotes = (sort) => {
-    setSelectedSort(sort);
-    //console.log(sort);
-    //setNotes();
-  } 
   return (
     <div className="App">
       <NoteForm create={createNote}/>
       <hr style={{margin: '15px 0'}}/>
-      <div>
-        <MyInput
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-          placeholder='Поиск по названию'
-        />
-        <MySelect
-          value = {selectedSort}
-          onChange={sortNotes}
-          defaultValue='Сортировка по'
-          options={[
-            {value: 'title', name:'По названию'},
-            {value: 'body', name:'По содержимому'}
-          ]}
-        />
-      </div>
+      <NoteFilter filter={filter} setFilter={setFilter} />
       {sortedAndSearchedNotes.length !== 0
       ? <NoteList remove={removeNote} change={change} notes={sortedAndSearchedNotes} title={'Список заметок:'} />
       : <h1 style={{textAlign: 'center'}}>Заметки не найдены!</h1>
