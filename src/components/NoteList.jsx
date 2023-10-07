@@ -2,7 +2,15 @@ import React from 'react';
 import NoteItem from './NoteItem';
 
 const NoteList = ({notes, title, remove, change}) => {
-    // из props вытягирваем нужное нам поле
+    // из props вытягиваем нужное поле
+
+    if (!notes.length){
+        return (
+            <h1 style={{textAlign: 'center'}}>
+                Заметки не найдены
+            </h1>
+        )
+    }
     return (
         <div>
             <h1 style={{textAlign: 'center'}}>
