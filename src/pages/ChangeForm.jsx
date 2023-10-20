@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import NoteChangeForm from '../components/NoteChangeForm';
-//import NoteService from '../API/NoteService';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { NoteApiApi } from '../API/src';
@@ -26,9 +25,6 @@ const ChangeForm = (props) => {
       .catch(err => {
         console.log(err)
       })
-        // console.log(changedNote.body);
-        // await NoteService.updateNote(changedNote.id, changedNote.title, changedNote.body);
-        // navigate('/notes'); // переходим обратно на основную страницу
     }
 
     return (

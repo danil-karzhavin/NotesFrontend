@@ -1,17 +1,19 @@
 import React, {useEffect, useState, useMemo} from 'react';
 import NoteList from '../components/NoteList';
 import NoteForm from '../components/NoteForm';
-import ApiClient from '../API/src/ApiClient';
 import { useNavigate } from 'react-router-dom';
-import MySelect from '../UI/select/MySelect';
-import MyInput from '../UI/input/MyInput';
 import NoteFilter from '../components/NoteFilter';
 import MyModal from '../UI/modal/MyModal';
 import MyButton from '../UI/button/MyButton';
 import { NoteApiApi } from '../API/src';
+import { useDispatch, useSelector } from 'react-redux';
+import { setNotesAction, removeNoteAction } from '../store/notesReducer';
 
 function Notes({func}) {
-  const [notes, setNotes] = useState([])
+  const dispatch = useDispatch() // hook для изменения состояния
+  const notes = useSelector(state => state.notes.notes) // state - глобальный объект  
+
+  //const [notes, setNotes] = useState([])
   const [modal, setModal] = useState(false); // modal - bool, отображение модального окна
 
   // автоматическая загрузка всех постов при обновлении страницы
@@ -47,15 +49,12 @@ function Notes({func}) {
       })
     myPromise
       .then(data => {
-        setNotes(data)
+        dispatch(setNotesAction(data)) // передаем массив заметок
+        //setNotes(data) // раньше устанавливали заметки через useState
       })
       .catch(err => {
         console.log(err)
       })
-
-    // const notes = await NoteService.getALL();
-    // setNotes(notes)
-    // console.log('notes: ', notes)
   }
 
   function removeNote (note) {
@@ -68,17 +67,15 @@ function Notes({func}) {
       })
       myPromise
         .then(() => {
-            console.log("successful remove note from deleteNote: ")
-            fetchNotes()
-            //return data
+          // дождавшись удаления из бд : можно удалить из state или можно запросить Get из бд 
+          dispatch(removeNoteAction(note))
+
+          //console.log("successful remove note from deleteNote: ")
+          //fetchNotes()
         })
         .catch(err => {
           console.log(err)
         })
-    
-    // добавил блокирующую потоку управления задежку
-    // const start = Date.now();
-    // while (Date.now() - start < 1000) {}
   }
 
   const navigate = useNavigate();
@@ -86,7 +83,6 @@ function Notes({func}) {
   const change = (note) => {
     navigate('/changeform', { state: note });
     return note;
-    //func(note)
   };
   
   const [filter, setFilter] = useState({sort: '', query: ''}) // для сортировки и поиска
